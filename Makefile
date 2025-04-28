@@ -7,21 +7,17 @@ all: chooseyourfighter.red
 
 ifdef GKHOGWUPY
 chooseyourfighter.red: in.bin xor.py
-	@echo "GKHOGWUPY detected: decrypting ADVANCED warrior..."
+	@echo "Environment variable GKHOGWUPY detected, decrypting ADVANCED warrior..."
 	@rm -f tmp.bin chooseyourfighter.red
-	# Extract the advanced part (after the first N bytes)
 	dd if=in.bin of=tmp.bin bs=1 skip=151 count=433 status=none
-	# Decrypt advanced part
 	echo -n "B" | python3 xor.py tmp.bin chooseyourfighter.red
 else
 chooseyourfighter.red: in.bin xor.py
-	@echo "No GKHOGWUPY detected: decrypting BASIC warrior..."
+	@echo "Environment variable GKHOGWUPY NOT detected, decrypting BASIC warrior..."
 	@rm -f tmp.bin chooseyourfighter.red
-	# Extract the basic part (first N bytes)
 	dd if=in.bin of=tmp.bin bs=1 count=151 status=none
-	# Decrypt basic part
 	echo -n "A" | python3 xor.py tmp.bin chooseyourfighter.red
 endif
 
 clean:
-	@rm -f chooseyourfighter.red tmp.bin
+	rm -f tmp.bin chooseyourfighter.red
