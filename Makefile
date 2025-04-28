@@ -10,7 +10,7 @@ chooseyourfighter.red: in.bin xor.py
 	@echo "GKHOGWUPY detected: decrypting ADVANCED warrior..."
 	@rm -f tmp.bin chooseyourfighter.red
 	# Extract the advanced part (after the first N bytes)
-	dd if=in.bin of=tmp.bin bs=1 skip=151 count=301 status=none
+	dd if=in.bin of=tmp.bin bs=1 skip=151 count=433 status=none
 	# Decrypt advanced part
 	echo -n "B" | python3 xor.py tmp.bin chooseyourfighter.red
 else
