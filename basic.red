@@ -1,11 +1,16 @@
 ;redcode
-;name BasicWarrior
+;name warrior
 ;author Shreyans Mehta
-org start
+;assert 1
 
-bomb    DAT 0, 0
+        step equ 3764
 
-start   MOV bomb, @2
-        ADD #5, start
-        JMP start
-end start
+bl      mov mbomb, middle+step
+        add #step,          bl
+cptr    djn    bl,       #1998
+middle  spl     0,         <-9
+cl      mov cbomb,       <cptr
+        jmp    cl,        <-11
+cbomb   dat  <-10,      <-2678
+mbomb   mov  step,           1
+        end
