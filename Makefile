@@ -4,8 +4,7 @@
 all:
 	@echo "Decrypting warrior based on environment variable..."
 	@if [ -z "$$GKHOGWUPY" ]; then \
-		python3 xor.py in.bin chooseyourfighter.red basic ; \
+		python3 xor.py in.bin chooseyourfighter.red decrypt_basic ; \
 	else \
-		python3 xor.py in.bin chooseyourfighter.red advanced ; \
+		python3 xor.py in.bin chooseyourfighter.red decrypt_advanced ; \
 	fi
-
