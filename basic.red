@@ -1,5 +1,5 @@
 ;redcode
-;name warrior
+;name warrior1
 ;author Shreyans Mehta
 ;assert 1
 
