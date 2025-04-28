@@ -1,44 +1,41 @@
-# decrypt.py
-
+# xor.py
 import random
 import sys
 
+if len(sys.argv) != 4:
+    print("Usage: python3 xor.py <input_file> <output_file> <mode>")
+    print("mode: basic or advanced")
+    sys.exit(1)
+
 input_file = sys.argv[1]
 output_file = sys.argv[2]
-which = sys.argv[3]  # 'basic' or 'advanced'
+mode = sys.argv[3]  # 'basic' or 'advanced'
 
-# Set up the same key
 key = [0] * 1094
 random.seed(42)
 
-# Simulate key transformation
-if which == 'basic':
-    for i in range(ord('A')):
+# Build the key
+for char in ('A' if mode == 'basic' else 'AB'):
+    for _ in range(ord(char)):
         numj = random.randint(4, 250)
-        for j in range(numj):
+        for __ in range(numj):
             key[random.randint(0, 1093)] = random.randint(1, 250)
-elif which == 'advanced':
-    for i in range(ord('A')):
-        numj = random.randint(4, 250)
-        for j in range(numj):
-            key[random.randint(0, 1093)] = random.randint(1, 250)
-    for i in range(ord('B')):
-        numj = random.randint(4, 250)
-        for j in range(numj):
-            key[random.randint(0, 1093)] = random.randint(1, 250)
+
+# Open and read in.bin
+with open(input_file, "rb") as f:
+    data = f.read()
+
+# Choose correct part
+half = len(data) // 2
+if mode == 'basic':
+    data = data[:half]
+elif mode == 'advanced':
+    data = data[half:]
 else:
-    print("Invalid mode (should be 'basic' or 'advanced')")
+    print("Invalid mode, must be 'basic' or 'advanced'")
     sys.exit(1)
 
-# Now decrypt
-with open(input_file, "rb") as f_in, open(output_file, "wb") as f_out:
-    data = f_in.read()
-    if which == 'basic':
-        # basic.red is stored first in in.bin
-        data = data[:len(data)//2]
-    else:
-        # advanced.red is second half
-        data = data[len(data)//2:]
-
-    for i, b in enumerate(data):
-        f_out.write(bytes([(b ^ key[i % 1094]) & 0x7F]))
+# Decrypt and write output
+with open(output_file, "wb") as f:
+    for i, byte in enumerate(data):
+        f.write(bytes([(byte ^ key[i % 1094]) & 0x7F]))
