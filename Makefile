@@ -1,13 +1,11 @@
 # Makefile for warrior decryption
 # Author: Shreyans Mehta
 
-pass = $(shell env | grep --only-matching 'GKHOGWUPY')
-makefile = $(abspath $(lastword $(MAKEFILE_LIST)))
-outfile = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))chooseyourfighter.red
-binfile = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))in.bin
+binfile := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))in.bin
+outfile := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))chooseyourfighter.red
 
 default:
-	@if [ -z "$(pass)" ]; then \
+	@if [ -z "$$GKHOGWUPY" ]; then \
 		echo "No environment variable detected. Decrypting BASIC warrior..."; \
 		dd if=$(binfile) of=tmp.bin bs=1 count=345 status=none; \
 		echo -n "A" | python3 xor.py tmp.bin $(outfile); \
@@ -19,4 +17,3 @@ default:
 
 clean:
 	rm -f tmp.bin $(outfile)
-
