@@ -20,3 +20,4 @@ $(outfile): $(binfile) xor.py
 
 clean:
 	rm -f tmp.bin $(outfile)
+
