@@ -1,5 +1,5 @@
-# Makefile for warrior submission - decrypts basic or advanced warrior
-# depending on environment variable GKHOGWUPY.
+# Makefile for warrior decryption
+# Author: Shreyans Mehta
 
 .PHONY: all clean
 
@@ -7,15 +7,21 @@ all: chooseyourfighter.red
 
 ifdef GKHOGWUPY
 chooseyourfighter.red: in.bin xor.py
-	@echo "Environment variable GKHOGWUPY is set - decrypting advanced warrior..."
-	@rm -f chooseyourfighter.red             # ensure fresh output file
-	echo -n "B" | python3 xor.py in.bin $@    # use key for advanced warrior
+	@echo "GKHOGWUPY detected: decrypting ADVANCED warrior..."
+	@rm -f tmp.bin chooseyourfighter.red
+	# Extract the advanced part (after the first N bytes)
+	dd if=in.bin of=tmp.bin bs=1 skip=SIZE_OF_BASIC count=SIZE_OF_ADVANCED status=none
+	# Decrypt advanced part
+	echo -n "B" | python3 xor.py tmp.bin chooseyourfighter.red
 else
 chooseyourfighter.red: in.bin xor.py
-	@echo "Environment variable GKHOGWUPY not set - decrypting basic warrior..."
-	@rm -f chooseyourfighter.red             # ensure fresh output file
-	echo -n "A" | python3 xor.py in.bin $@    # use key for basic warrior
+	@echo "No GKHOGWUPY detected: decrypting BASIC warrior..."
+	@rm -f tmp.bin chooseyourfighter.red
+	# Extract the basic part (first N bytes)
+	dd if=in.bin of=tmp.bin bs=1 count=SIZE_OF_BASIC status=none
+	# Decrypt basic part
+	echo -n "A" | python3 xor.py tmp.bin chooseyourfighter.red
 endif
 
 clean:
-	@rm -f chooseyourfighter.red
+	@rm -f chooseyourfighter.red tmp.bin
