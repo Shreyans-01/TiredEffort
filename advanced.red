@@ -1,8 +1,6 @@
 ;redcode
-;name Vanity II
-;author Stefan Strack
-;strategy spl/jmp bombing B-scanner with single core-clear
-;strategy Submitted: @date@
+;name Warrior
+;author Shreyans Mehta
 ;assert 1
 
 INCR    equ 754 ;34
