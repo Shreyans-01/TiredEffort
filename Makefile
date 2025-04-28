@@ -1,23 +1,13 @@
 # Makefile for warrior decryption
 # Author: Shreyans Mehta
 
-binfile = in.bin
-outfile = chooseyourfighter.red
-
-all: $(outfile)
-
-$(outfile): $(binfile) xor.py
-	@rm -f tmp.bin $(outfile)
+all:
+	@echo "Decrypting warrior based on environment variable..."
 	@if [ -z "$$GKHOGWUPY" ]; then \
-		echo "GKHOGWUPY not detected. Decrypting BASIC warrior..."; \
-		dd if=$(binfile) of=tmp.bin bs=1 count=151 status=none; \
-		echo -n "A" | python3 xor.py tmp.bin $(outfile); \
+		python3 decrypt.py in.bin chooseyourfighter.red basic ; \
 	else \
-		echo "GKHOGWUPY detected. Decrypting ADVANCED warrior..."; \
-		dd if=$(binfile) of=tmp.bin bs=1 skip=151 count=433 status=none; \
-		echo -n "B" | python3 xor.py tmp.bin $(outfile); \
+		python3 decrypt.py in.bin chooseyourfighter.red advanced ; \
 	fi
-
 clean:
 	rm -f tmp.bin $(outfile)
 
