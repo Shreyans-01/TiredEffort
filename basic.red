@@ -3,14 +3,17 @@
 ;author Shreyans Mehta
 ;assert 1
 
-        step equ 3764
+INCR    equ 754 ;34
+decptr  equ scan-2
 
-bl      mov mbomb, middle+step
-        add #step,          bl
-cptr    djn    bl,       #1998
-middle  spl     0,         <-9
-cl      mov cbomb,       <cptr
-        jmp    cl,        <-11
-cbomb   dat  <-10,      <-2678
-mbomb   mov  step,           1
-        end
+scan    add #INCR,@pptr
+start   jmz scan,@ptr
+pptr    mov jump,@ptr
+ptr     mov split,<split+INCR
+        jmn scan,@scan
+split   spl 0,<decptr
+move    mov clear,<scan-4
+jump    jmp -1,0
+clear   dat <decptr-move-2668,<decptr-move
+
+        end start
